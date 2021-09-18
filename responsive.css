@@ -1,0 +1,17 @@
+@media screen and (max-width: 550px) {
+  .scroll-up {
+   visibility: hidden;
+ } 
+}
+
+@media screen and (max-width: 400px) {
+.twenty-card-container .movie-card {
+  max-width: 350px;
+  width: 100%;
+}
+
+.twenty-card-container .movie-card .img-wrapper img {
+  display: none;
+}
+
+}

@@ -7,8 +7,9 @@
     <title>_twentyMvz</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="base.css" />
+    <link rel="stylesheet" href="">
     <script
       src="https://kit.fontawesome.com/fbb29194c2.js"
       crossorigin="anonymous"
@@ -27,7 +28,7 @@
           <div class="nav-bar-items">
             <ul class="link-menu">
               <li class="link"><a href="#">Home</a></li>
-              <li class="link" data-open="yourFav">Your Favorites</li>
+              <li class="link"><a href="#yourFav">Your Favorites</a></li>
             </ul>
           </div>
           <div class="site-logo">
@@ -39,7 +40,7 @@
       <!-- Hero Section -->
 
       <section>
-        <div class="container">
+        <div class="container hero-section">
           <div class="hero-images">
             <div class="hero-image-1">
               <i class="fas fa-film"></i>
@@ -57,7 +58,7 @@
               Twenty movies that influenced my life.
             </h1>
             <p>
-              When you see a game that changed your life, <br />
+              When you see a movie that changed your life, <br />
               click the "Add" button to start your own collection. <br />
               Let's see how many movies we have in common. Cheers!
             </p>
@@ -68,30 +69,25 @@
       <!-- Card Section-->
 
       <section>
-        <div
-          id="twenty-card-container"
-          class="container twenty-card-container"
-        ><a class="scroll-up" id="scrollUp" href="#pageTop"><i class="fas fa-arrow-up"></i></a></div>
+        <div id="twenty-card-container" class="container twenty-card-container">
+          <a class="scroll-up" id="scrollUp" href="#pageTop"
+            ><i class="fas fa-arrow-up"></i
+          ></a>
+        </div>
       </section>
 
-      <!-- Your Favorites Modal -->
+      <!-- Your Favorites -->
       <section>
-        <div
-          id="yourFav"
-          class="full-site-modal page-block"
-          data-animation="zoomInOut"
-        >
-          <div class="container-fluid">
-            <header class="modal-header">
-              <h2>Your Favorites:</h2>
-              <i class="fas fa-times" data-close></i>
-            </header>
-          </div>
-          <div
-            id="user-card-container"
-            class="container user-card-container"
-          ></div>
+        <div id="yourFav" class="your-favorites-container">
+          <h1>
+            Your Collection: <br />
+            Movies that you also vibed with.
+          </h1>
         </div>
+        <div
+          id="user-card-container"
+          class="container user-card-container"
+        ></div>
       </section>
     </main>
     <script src="main.js" async defer></script>

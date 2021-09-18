@@ -1,29 +1,3 @@
-const modalOpen = "[data-open]";
-const modalClose = "[data-close]";
-const isVisible = "is-visible";
-
-/* button */
-
-const btn = document.getElementById("yourFavButton");
-
-/* modal */
-const openModal = document.querySelectorAll(modalOpen);
-const closeModal = document.querySelectorAll(modalClose);
-
-// modal/full site modal "open buttons"
-for (const elm of openModal) {
-  elm.addEventListener("click", function () {
-    const modalId = this.dataset.open;
-    document.getElementById(modalId).classList.add(isVisible);
-  });
-}
-
-for (const elm of closeModal) {
-  elm.addEventListener("click", function () {
-    this.parentElement.parentElement.parentElement.classList.remove(isVisible);
-  });
-}
-
 const movies = [
   "Arrival",
   "Gladiator",
@@ -47,6 +21,13 @@ const movies = [
   "good+will+hunting",
 ];
 
+const toggleFunction = (id) => {
+  let card = document.getElementById(id).style;
+  let userCard = document.getElementById(`user-${id}`).style;
+  card.display = card.display === "none" ? "block" : "none";
+  userCard.display = card.display === "none" ? "block" : "none";
+};
+
 let movieData = [];
 const fetchMovieData = async (movieTitle) => {
   const resp = await fetch(
@@ -68,7 +49,7 @@ const fetchAllMovieData = async () => {
 
   movieData.forEach((movie) => {
     const movieDump = document.getElementById("twenty-card-container");
-    const content = `<div class="movie-card fadeInUp">
+    const content = `<div id="${movie.Title}" class="movie-card fadeInUp">
         <div class="title-header">
           <h2>${movie.Title}</h2>
         </div>
@@ -83,18 +64,51 @@ const fetchAllMovieData = async () => {
             <li> Rating: ${movie.Rated}</li>
           </ul>
         </div>
-        <div class="btn-wrapper">
-          <button id="yourFavButton" class="add-btn">
+          <button data-id="${movie.Title}" class="add-btn">
             <i class="fas fa-user-plus"></i>
              Add to your favorites!
-             <a href="#"></a>
           </button>
-        </div>
     </div>`;
     movieDump.innerHTML += content;
   });
-})();
+  document.querySelectorAll(".add-btn").forEach((item) => {
+    item.addEventListener("click", (event) => {
+      toggleFunction(item.dataset.id);
+    });
+  });
 
-btn.addEventListener("click", function () {
-  console.log("hit");
-})
+  let userMovieData = [...movieData];
+  console.log(userMovieData);
+  console.log(movieData);
+
+  userMovieData.forEach((movie) => {
+    const userMovieDump = document.getElementById("user-card-container");
+    const userContent = `<div id="user-${movie.Title}" class="movie-card invisible">
+        <div class="title-header">
+          <h2>${movie.Title}</h2>
+        </div>
+        <div class="img-wrapper">
+          <img src="${movie.Poster}" alt="movie-poster" />
+        </div>
+        <div class="movie-details">
+          <ul class="details-list">
+            <li> Directed by: ${movie.Director}</li>
+            <li> Release Date: ${movie.Released}</li>
+            <li> Runtime: ${movie.Runtime}</li>
+            <li> Rating: ${movie.Rated}</li>
+          </ul>
+        </div>
+          <button data-id="${movie.Title}" class="remove-btn">
+            <i class="fas fa-user-plus"></i>
+             Remove from your favorites!
+          </button>
+    </div>`;
+    userMovieDump.innerHTML += userContent;
+  });
+
+  document.querySelectorAll(".remove-btn").forEach((item) => {
+    item.addEventListener("click", (event) => {
+      toggleFunction(item.dataset.id)
+    });
+  });
+})();
