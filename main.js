@@ -1,3 +1,5 @@
+//Movies array
+
 const movies = [
   "Arrival",
   "Gladiator",
@@ -21,14 +23,63 @@ const movies = [
   "good+will+hunting",
 ];
 
-const toggleFunction = (id) => {
-  let card = document.getElementById(id).style;
-  let userCard = document.getElementById(`user-${id}`).style;
-  card.display = card.display === "none" ? "block" : "none";
-  userCard.display = card.display === "none" ? "block" : "none";
+let myMovies = [];
+
+function generateHTML () {
+  myMoviesContainer = document.getElementById("twenty-card-container");
+  favoritedMoviesContainer = document.getElementById("user-card-container");
+  myMoviesContainer.innerHTML = '';
+  favoritedMoviesContainer.innerHTML = '';
+  myMovies.forEach((movie) => {
+    let movieDump = movie.isFavorite ? favoritedMoviesContainer : myMoviesContainer;
+    let content = `<div id="${movie.Title}" class="movie-card fadeInUp sort-me">
+        <div class="title-header">
+          <h2">${movie.Title}</h2>
+        </div>
+        <div class="img-wrapper">
+          <img src="${movie.Poster}" alt="movie-poster" />
+        </div>
+        <div class="movie-details">
+          <ul class="details-list">
+            <li> Directed by: ${movie.Director}</li>
+            <li> Release Date: ${movie.Released}</li>
+            <li> Runtime: ${movie.Runtime}</li>
+            <li> Rating: ${movie.Rated}</li>
+          </ul>
+        </div>
+          <button onclick="toggleFunction('${movie.Title}')" class="toggle-btn">
+            <i class="fas fa-user-plus"></i>
+             Add/remove from your favorites!
+          </button>
+    </div>`;
+    movieDump.innerHTML += content;
+  });
+}
+//Toggle functions
+
+function toggleFunction(selectedMovie) {
+  let movieIndex;
+  movieIndex = myMovies.findIndex(movie => movie.Title === selectedMovie)
+  console.log(myMovies[movieIndex].isFavorite)
+  myMovies[movieIndex].isFavorite = !myMovies[movieIndex].isFavorite
+  console.log(myMovies[movieIndex].isFavorite)
+  generateHTML(myMovies);
 };
 
-let movieData = [];
+//Sort functions
+
+const sortFuncAZ = () => {
+  myMovies.sort((a, b) => (a.Title > b.Title ? 1 : -1));
+  generateHTML();
+};
+
+const sortFuncZA = () => {
+  myMovies.sort((a, b) => (b.Title > a.Title ? 1 : -1));
+  generateHTML();
+};
+
+//fetch data function
+
 const fetchMovieData = async (movieTitle) => {
   const resp = await fetch(
     "https://www.omdbapi.com/?t=" + movieTitle + "&apikey=trilogy"
@@ -42,73 +93,22 @@ const fetchAllMovieData = async () => {
     const data = await fetchMovieData(movies[i]);
     movieList.push(data);
   }
-  movieData = movieList;
+  return movieList;
 };
+
 (async () => {
-  await fetchAllMovieData();
+  movieData = await fetchAllMovieData();
+  myMovies = movieData.map((movie) => ({...movie, isFavorite: false}))
+  generateHTML();
 
-  movieData.forEach((movie) => {
-    const movieDump = document.getElementById("twenty-card-container");
-    const content = `<div id="${movie.Title}" class="movie-card fadeInUp">
-        <div class="title-header">
-          <h2>${movie.Title}</h2>
-        </div>
-        <div class="img-wrapper">
-          <img src="${movie.Poster}" alt="movie-poster" />
-        </div>
-        <div class="movie-details">
-          <ul class="details-list">
-            <li> Directed by: ${movie.Director}</li>
-            <li> Release Date: ${movie.Released}</li>
-            <li> Runtime: ${movie.Runtime}</li>
-            <li> Rating: ${movie.Rated}</li>
-          </ul>
-        </div>
-          <button data-id="${movie.Title}" class="add-btn">
-            <i class="fas fa-user-plus"></i>
-             Add to your favorites!
-          </button>
-    </div>`;
-    movieDump.innerHTML += content;
-  });
-  document.querySelectorAll(".add-btn").forEach((item) => {
-    item.addEventListener("click", (event) => {
-      toggleFunction(item.dataset.id);
-    });
-  });
-
-  let userMovieData = [...movieData];
-  console.log(userMovieData);
-  console.log(movieData);
-
-  userMovieData.forEach((movie) => {
-    const userMovieDump = document.getElementById("user-card-container");
-    const userContent = `<div id="user-${movie.Title}" class="movie-card invisible">
-        <div class="title-header">
-          <h2>${movie.Title}</h2>
-        </div>
-        <div class="img-wrapper">
-          <img src="${movie.Poster}" alt="movie-poster" />
-        </div>
-        <div class="movie-details">
-          <ul class="details-list">
-            <li> Directed by: ${movie.Director}</li>
-            <li> Release Date: ${movie.Released}</li>
-            <li> Runtime: ${movie.Runtime}</li>
-            <li> Rating: ${movie.Rated}</li>
-          </ul>
-        </div>
-          <button data-id="${movie.Title}" class="remove-btn">
-            <i class="fas fa-user-plus"></i>
-             Remove from your favorites!
-          </button>
-    </div>`;
-    userMovieDump.innerHTML += userContent;
-  });
-
-  document.querySelectorAll(".remove-btn").forEach((item) => {
-    item.addEventListener("click", (event) => {
-      toggleFunction(item.dataset.id)
-    });
+  document.addEventListener("click", (event) => {
+    if (event.target) {
+      if (event.target.className === "sort-z-a") {
+        sortFuncZA();
+      }
+      if (event.target.className === "sort-a-z") {
+        sortFuncAZ();
+      }
+    }
   });
 })();

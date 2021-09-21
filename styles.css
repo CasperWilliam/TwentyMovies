@@ -88,6 +88,25 @@
   line-height: 1.6;
 }
 
+.sort-buttons-container {
+  display: flex;
+  justify-content: center;
+}
+
+.sort-buttons-container button {
+  background-color: #5acaa7;
+  color: var(--white);
+  outline: none;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  padding: -20px 20px;
+  margin-left: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -145,8 +164,7 @@
   pointer-events: none;
 }
 
-.add-btn,
-.remove-btn {
+.toggle-btn {
   background-color: transparent;
   color: #387cf6;
   outline: none;
